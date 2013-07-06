@@ -14,6 +14,7 @@
     // Format is key: path_to_executable
     // e.g. "git": "/usr/bin/git" or "git": "C:\bin\git.exe"
     "vcs_paths": {
+        "diff": "diff",
         "git": "git",
         "hg": "hg",
         "svn": "svn"

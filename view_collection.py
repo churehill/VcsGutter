@@ -23,11 +23,11 @@ class ViewCollection:
             from gutter_handlers import GitGutterHandler, HgGutterHandler, SvnGutterHandler
 
         settings = sublime.load_settings('VcsGutter.sublime-settings')
-        vcs_paths = settings.get('vcs_paths', [
-            ["git", "git"],
-            ["hg", "hg"],
-            ["svn", "svn"]
-        ])
+        vcs_paths = settings.get('vcs_paths', {
+            'git': 'git',
+            'hg': 'hg',
+            'svn': 'svn'
+        })
 
         handler = None
         if GitHelper.is_git_repository(view):

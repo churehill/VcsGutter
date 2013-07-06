@@ -128,11 +128,15 @@ class VcsGutterHandler(object):
             return (inserted, modified, deleted)
 
     def diff(self):
+        settings = sublime.load_settings('VcsGutter.sublime-settings')
+        vcs_paths = settings.get('vcs_paths', {'diff': 'diff'})
+        diff_path = vcs_paths['diff']
+
         if self.on_disk() and self.vcs_path:
             self.update_vcs_file()
             self.update_buf_file()
             args = [
-                'diff',
+                diff_path,
                 self.vcs_temp_file.name,
                 self.buf_temp_file.name,
             ]

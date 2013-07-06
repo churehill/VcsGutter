@@ -1,3 +1,4 @@
+import errno
 import os
 import sublime
 import subprocess
@@ -150,8 +151,18 @@ class VcsGutterHandler(object):
         if os.name == 'nt':
             startupinfo = subprocess.STARTUPINFO()
             startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
-        proc = subprocess.Popen(args, stdout=subprocess.PIPE,
-                                startupinfo=startupinfo)
+        try:
+            proc = subprocess.Popen(args, stdout=subprocess.PIPE,
+                                    startupinfo=startupinfo)
+        except OSError as e:
+            print('Vcs Gutter: Failed to run command %r: %r' % (args[0], e))
+            if e.errno == errno.ENOENT:
+                print('Vcs Gutter: The path can be customized in settings if necessary.')
+            return ''
+        except Exception as e:
+            print('Vcs Gutter: Failed to run command %r: %r' % (args[0], e))
+            return ''
+            
         return proc.stdout.read()
 
 

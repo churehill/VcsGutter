@@ -72,7 +72,12 @@ class ViewCollection:
     @staticmethod
     def diff(view):
         key = ViewCollection.get_key(view)
-        return ViewCollection.views[key].diff()
+        try:
+            result = ViewCollection.views[key].diff()
+        except KeyError:
+            result = ([], [], [])
+
+        return result
 
     @staticmethod
     def vcs_time(view):

@@ -29,13 +29,25 @@ class ViewCollection:
             'svn': 'svn'
         })
 
-        handler = None
+        key = None
         if GitHelper.is_git_repository(view):
-            handler = GitGutterHandler(view, vcs_paths['git'])
+            key = 'git'
+            klass = GitGutterHandler
         elif HgHelper.is_hg_repository(view):
-            handler = HgGutterHandler(view, vcs_paths['hg'])
+            key = 'hg'
+            klass = HgGutterHandler
         elif SvnHelper.is_svn_repository(view):
-            handler = SvnGutterHandler(view, vcs_paths['svn'])
+            key = 'svn'
+            klass = SvnGutterHandler
+
+        handler = None
+        if key is not None:
+            try:
+                path = vcs_paths[key]
+            except (KeyError, TypeError):
+                print('Vcs Gutter: Invalid path for %s executable in settings. Using default.' % key)
+                path = key
+            handler = klass(view, path)
 
         # If no handler found then either the view does not represent a
         # file on disk (e.g. not yet saved) or the file is not in a supported

@@ -131,7 +131,11 @@ class VcsGutterHandler(object):
     def diff(self):
         settings = sublime.load_settings('VcsGutter.sublime-settings')
         vcs_paths = settings.get('vcs_paths', {'diff': 'diff'})
-        diff_path = vcs_paths['diff']
+        try:
+            diff_path = vcs_paths['diff']
+        except:
+            print('Vcs Gutter: Invalid path for diff in settings. Using default.')
+            diff_path = 'diff'
 
         if self.on_disk() and self.vcs_path:
             self.update_vcs_file()

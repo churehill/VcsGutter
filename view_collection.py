@@ -23,19 +23,31 @@ class ViewCollection:
             from gutter_handlers import GitGutterHandler, HgGutterHandler, SvnGutterHandler
 
         settings = sublime.load_settings('VcsGutter.sublime-settings')
-        vcs_paths = settings.get('vcs_paths', [
-            ["git", "git"],
-            ["hg", "hg"],
-            ["svn", "svn"]
-        ])
+        vcs_paths = settings.get('vcs_paths', {
+            'git': 'git',
+            'hg': 'hg',
+            'svn': 'svn'
+        })
+
+        key = None
+        if GitHelper.is_git_repository(view):
+            key = 'git'
+            klass = GitGutterHandler
+        elif HgHelper.is_hg_repository(view):
+            key = 'hg'
+            klass = HgGutterHandler
+        elif SvnHelper.is_svn_repository(view):
+            key = 'svn'
+            klass = SvnGutterHandler
 
         handler = None
-        if GitHelper.is_git_repository(view):
-            handler = GitGutterHandler(view, vcs_paths['git'])
-        elif HgHelper.is_hg_repository(view):
-            handler = HgGutterHandler(view, vcs_paths['hg'])
-        elif SvnHelper.is_svn_repository(view):
-            handler = SvnGutterHandler(view, vcs_paths['svn'])
+        if key is not None:
+            try:
+                path = vcs_paths[key]
+            except (KeyError, TypeError):
+                print('Vcs Gutter: Invalid path for %s executable in settings. Using default.' % key)
+                path = key
+            handler = klass(view, path)
 
         # If no handler found then either the view does not represent a
         # file on disk (e.g. not yet saved) or the file is not in a supported
@@ -60,7 +72,12 @@ class ViewCollection:
     @staticmethod
     def diff(view):
         key = ViewCollection.get_key(view)
-        return ViewCollection.views[key].diff()
+        try:
+            result = ViewCollection.views[key].diff()
+        except KeyError:
+            result = ([], [], [])
+
+        return result
 
     @staticmethod
     def vcs_time(view):

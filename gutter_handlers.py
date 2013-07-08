@@ -1,3 +1,4 @@
+import errno
 import os
 import sublime
 import subprocess
@@ -128,11 +129,19 @@ class VcsGutterHandler(object):
             return (inserted, modified, deleted)
 
     def diff(self):
+        settings = sublime.load_settings('VcsGutter.sublime-settings')
+        vcs_paths = settings.get('vcs_paths', {'diff': 'diff'})
+        try:
+            diff_path = vcs_paths['diff']
+        except:
+            print('Vcs Gutter: Invalid path for diff in settings. Using default.')
+            diff_path = 'diff'
+
         if self.on_disk() and self.vcs_path:
             self.update_vcs_file()
             self.update_buf_file()
             args = [
-                'diff',
+                diff_path,
                 self.vcs_temp_file.name,
                 self.buf_temp_file.name,
             ]
@@ -146,8 +155,18 @@ class VcsGutterHandler(object):
         if os.name == 'nt':
             startupinfo = subprocess.STARTUPINFO()
             startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
-        proc = subprocess.Popen(args, stdout=subprocess.PIPE,
-                                startupinfo=startupinfo)
+        try:
+            proc = subprocess.Popen(args, stdout=subprocess.PIPE,
+                                    startupinfo=startupinfo)
+        except OSError as e:
+            print('Vcs Gutter: Failed to run command %r: %r' % (args[0], e))
+            if e.errno == errno.ENOENT:
+                print('Vcs Gutter: The path can be customized in settings if necessary.')
+            return ''
+        except Exception as e:
+            print('Vcs Gutter: Failed to run command %r: %r' % (args[0], e))
+            return ''
+            
         return proc.stdout.read()
 
 

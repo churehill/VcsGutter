@@ -1,0 +1,4 @@
+[
+    { "keys": ["super+shift+option+j"], "command": "vcs_gutter_next_change" },
+    { "keys": ["super+shift+option+k"], "command": "vcs_gutter_prev_change" }
+]

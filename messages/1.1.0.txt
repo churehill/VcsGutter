@@ -1,0 +1,21 @@
+V1.1.0 Change Log
+=================
+
+Features
+--------
+
+* Add key bindings to jump between next and previous changes within a file (Github issue 19). Default bindings are:
+
+  * Linux
+    - Ctrl-Shift-Alt-J - Next change
+    - Ctrl-Shift-Alt-K - Previous change
+  * Mac OS X
+    - Command-Shift-Option-J - Next change
+    - Command-Shift-Option-K - Previous change
+  * Windows
+    - Ctrl-Shift-Alt-J - Next change
+    - Ctrl-Shift-Alt-K - Previous change
+
+Fixes
+-----
+* Issue reading output on Windows 7 (Github issue 18)

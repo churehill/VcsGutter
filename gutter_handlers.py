@@ -157,6 +157,7 @@ class VcsGutterHandler(object):
             startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
         try:
             proc = subprocess.Popen(args, stdout=subprocess.PIPE,
+                                    stderr=subprocess.PIPE,
                                     startupinfo=startupinfo)
         except OSError as e:
             print('Vcs Gutter: Failed to run command %r: %r' % (args[0], e))

@@ -45,6 +45,8 @@ For example:
 
 Alternatively, you can configure the paths in settings as described below.
 
+Windows does not include a `diff` utility. A good open source option is the [GnuWin DiffUtils](http://gnuwin32.sourceforge.net/packages/diffutils.htm) package.
+
 ### Settings
 
 Settings are accessed via the <kbd>Preferences</kbd> > <kbd>Package Settings</kbd> > <kbd>VCS Gutter</kbd> menu.

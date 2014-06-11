@@ -1,6 +1,6 @@
 import sublime_plugin
 try:
-    from VcsGutter.view_collection import ViewCollection
+    from .view_collection import ViewCollection
 except ImportError:
     from view_collection import ViewCollection
 

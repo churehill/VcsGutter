@@ -1,0 +1,6 @@
+V1.1.1 Change Log
+=================
+
+Fixes
+-----
+* Import error on Windows 7 (Github issues 23 and 24)

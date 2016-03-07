@@ -5,6 +5,9 @@ try:
 except ValueError:
     from view_collection import ViewCollection
 
+ST3 = int(sublime.version()) >= 3000
+
+_show_in_minimap = False
 
 def plugin_loaded():
     """
@@ -19,6 +22,9 @@ def plugin_loaded():
     if not exists(icon_path):
         makedirs(icon_path)
 
+    settings = sublime.load_settings('VcsGutter.sublime-settings')
+    global _show_in_minimap
+    _show_in_minimap = settings.get('show_in_miminap', False)
 
 class VcsGutterCommand(sublime_plugin.WindowCommand):
     region_names = ['deleted_top', 'deleted_bottom',
@@ -44,7 +50,7 @@ class VcsGutterCommand(sublime_plugin.WindowCommand):
         regions = []
         for line in lines:
             position = self.view.text_point(line - 1, 0)
-            region = sublime.Region(position, position)
+            region = sublime.Region(position, position+1)
             regions.append(region)
         return regions
 
@@ -79,4 +85,8 @@ class VcsGutterCommand(sublime_plugin.WindowCommand):
             event_scope = 'deleted'
         scope = 'markup.%s.vcs_gutter' % event_scope
         icon = self.icon_path(event)
-        self.view.add_regions('vcs_gutter_%s' % event, regions, scope, icon)
+        if ST3 and _show_in_minimap:
+            flags = sublime.DRAW_NO_FILL | sublime.DRAW_NO_OUTLINE
+        else:
+            flags = sublime.HIDDEN
+        self.view.add_regions('vcs_gutter_%s' % event, regions, scope, icon, flags)

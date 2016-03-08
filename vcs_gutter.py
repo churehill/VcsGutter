@@ -24,7 +24,7 @@ def plugin_loaded():
 
     settings = sublime.load_settings('VcsGutter.sublime-settings')
     global _show_in_minimap
-    _show_in_minimap = settings.get('show_in_miminap', False)
+    _show_in_minimap = settings.get('show_in_mimimap', False)
 
 class VcsGutterCommand(sublime_plugin.WindowCommand):
     region_names = ['deleted_top', 'deleted_bottom',

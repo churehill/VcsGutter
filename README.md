@@ -14,7 +14,7 @@ VCS Gutter is a "friendly fork" that builds on the original work by
 
 ### Installation
 
-You can install via [Sublime Package Control](http://wbond.net/sublime_packages/package_control)  
+You can install via [Sublime Package Control](http://wbond.net/sublime_packages/package_control)
 Or you can clone this repo into your *Sublime Text 2/Packages*
 
 *Mac OS X*
@@ -55,6 +55,9 @@ Default settings should not be modified, as they are overwritten when VCS Gutter
 
 #### Live Mode
 By default, VCS Gutter detects changes every time the file is modified. If you experience performance issues you can set it to only run on save by setting `live_mode` to `false`.
+
+#### Show in Minimap
+By default, this is turned off. When the parameter ```shown_in_minimap``` is set to true, then the gutter icons are also shown on the minimap.
 
 #### Non Blocking Mode
 By default, VcsGutter runs in the same thread which can block if it starts to perform slowly. Usually this isn't a problem but depending on the size of your file or repo it can be. If you set `non_blocking` to `true` then VcsGutter will run in a seperate thread and will not block. This does cause a slight delay between when you make a modification and when the icons update in the gutter. This is a ***Sublime Text 3 only feature***. Sublime Text 2 users can turn off live mode if performance is an issue.

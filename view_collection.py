@@ -28,7 +28,7 @@ class ViewCollection:
             'hg': 'hg',
             'svn': 'svn'
         })
-        enabled_vcs = settings.get('enabled_vcs', {})
+        enabled_vcs = settings.get('enabled_vcs', [])
 
         key = None
         if 'svn' in enabled_vcs and SvnHelper.is_svn_repository(view):

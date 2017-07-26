@@ -28,17 +28,18 @@ class ViewCollection:
             'hg': 'hg',
             'svn': 'svn'
         })
+        enabled_vcs = settings.get('enabled_vcs', {})
 
         key = None
-        if GitHelper.is_git_repository(view):
-            key = 'git'
-            klass = GitGutterHandler
-        elif HgHelper.is_hg_repository(view):
-            key = 'hg'
-            klass = HgGutterHandler
-        elif SvnHelper.is_svn_repository(view):
+        if 'svn' in enabled_vcs and SvnHelper.is_svn_repository(view):
             key = 'svn'
             klass = SvnGutterHandler
+        elif 'git' in enabled_vcs and GitHelper.is_git_repository(view):
+            key = 'git'
+            klass = GitGutterHandler
+        elif 'hg' in enabled_vcs and HgHelper.is_hg_repository(view):
+            key = 'hg'
+            klass = HgGutterHandler
 
         handler = None
         if key is not None:
